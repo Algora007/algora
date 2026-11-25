@@ -15,7 +15,7 @@
     <meta property="og:title" content="Algora · No-code trading bots for Indian markets" />
     <meta property="og:description" content="Write trading rules for Nifty, BankNifty, stocks and MCX without code. Backtest them on your own candles, free, in your browser." />
     <meta name="twitter:card" content="summary" />
-    <link rel="stylesheet" href="hark.css?v=20261126a" />
+    <link rel="stylesheet" href="hark.css?v=20261126b" />
     <style>
       /* ===== Theme tokens ===== */
       [data-theme="light"] {
@@ -340,7 +340,7 @@
     <script>/* Motion gate: hidden starting states only exist under html.fx; removed if algora-fx.js does not start */
       (function () { try { var d = document.documentElement; if (window.matchMedia && !matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) { d.classList.add("fx"); setTimeout(function () { if (!window.__algoraFx) d.classList.remove("fx"); }, 4000); } } catch (e) {} })();
     </script>
-    <link rel="stylesheet" href="algora-home.css?v=20261126a" />
+    <link rel="stylesheet" href="algora-home.css?v=20261126b" />
   </head>
   <body>
     <div class="page" id="top">
@@ -402,21 +402,20 @@
                   </dl>
                 </div>
 
-                <figure class="ed-app" aria-label="Strategy builder and backtest for a First Candle Cross bot on NIFTY. All figures simulated.">
+                <figure class="ed-app" aria-label="An example bot: First Candle Cross on NIFTY futures, written as rules.">
                   <div class="ed-app__bar">
-                    <span class="ed-app__crumb">Bots <i>/</i> <b>fcc-nifty-15m</b> <i>/</i> Backtest</span>
-                    <span class="ed-app__tabs" aria-hidden="true"><span>Rules</span><span class="is-on">Backtest</span><span>Paper</span></span>
-                    <span class="ed-sim">Simulated</span>
+                    <span class="ed-app__crumb">Bots <i>/</i> <b>fcc-nifty-15m</b> <i>/</i> Rules</span>
+                    <span class="ed-app__tabs" aria-hidden="true"><span class="is-on">Rules</span><span>Backtest</span><span>Paper</span><span>Live</span></span>
                   </div>
                   <div class="ed-app__body">
                     <div class="ed-app__rules">
-                      <p class="ed-app__label">Rules</p>
+                      <p class="ed-app__label">Settings</p>
                       <p class="ed-app__strat">First Candle Cross</p>
                       <table class="ed-kv">
                         <tbody>
                           <tr><th scope="row">Instrument</th><td class="m">NIFTY FUT</td></tr>
                           <tr><th scope="row">Timeframe</th><td class="m">15m</td></tr>
-                          <tr><th scope="row">Entry</th><td class="m">close &gt; FC&nbsp;high +0.10%</td></tr>
+                          <tr><th scope="row">Buffer</th><td class="m">0.10%</td></tr>
                           <tr><th scope="row">Target</th><td class="m">0.60%</td></tr>
                           <tr><th scope="row">Stop</th><td class="m">0.35%</td></tr>
                           <tr><th scope="row">Max entries</th><td class="m">4 / day</td></tr>
@@ -425,37 +424,25 @@
                         </tbody>
                       </table>
                     </div>
-                    <div class="ed-app__main">
-                      <div class="ed-kpis">
-                        <div><small>Net P&amp;L</small><b class="x-up">₹41,782</b></div>
-                        <div><small>Trades</small><b>126</b></div>
-                        <div><small>Win rate</small><b>52.4%</b></div>
-                        <div><small>Max drawdown</small><b class="x-down">−₹10,799</b></div>
+                    <div class="ed-app__main ed-app__plan">
+                      <p class="ed-app__label">Reads as</p>
+                      <div class="ed-rules ed-rules--hero">
+                        <div><em>IF</em><span>a 15m candle closes above the first candle's high + 0.10%</span></div>
+                        <div><em>THEN</em><span>buy 1 lot of NIFTY FUT</span></div>
+                        <div><em>IF</em><span>it closes below the first candle's low − 0.10%</span></div>
+                        <div><em>THEN</em><span>sell 1 lot, or flip an open long</span></div>
+                        <div><em>EXIT</em><span>at the 0.60% target or the 0.35% stop</span></div>
+                        <div><em>LIMIT</em><span>4 entries a day, square off at 15:15 IST</span></div>
                       </div>
-                      <div class="ed-eq">
-                        <svg id="ed-eq" viewBox="0 0 600 200" preserveAspectRatio="none" aria-hidden="true">
-                          <g class="ed-eq__grid"></g>
-                          <path class="ed-eq__area" />
-                          <path class="ed-eq__line" pathLength="1" />
-                        </svg>
-                        <div class="ed-eq__x" aria-hidden="true"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span></div>
-                      </div>
-                      <table class="ed-trades">
-                        <thead><tr><th>Date</th><th>Side</th><th class="n">Entry</th><th class="n">Exit</th><th class="n">P&amp;L</th></tr></thead>
-                        <tbody>
-                          <tr><td>27 Jun 09:45</td><td><span class="ed-side">Long</span></td><td class="n">24,118.40</td><td class="n">24,263.10</td><td class="n x-up">+₹9,406</td></tr>
-                          <tr><td>26 Jun 10:00</td><td><span class="ed-side ed-side--s">Short</span></td><td class="n">24,031.75</td><td class="n">24,115.85</td><td class="n x-down">−₹5,467</td></tr>
-                          <tr><td>25 Jun 09:30</td><td><span class="ed-side">Long</span></td><td class="n">23,964.20</td><td class="n">24,037.90</td><td class="n x-up">+₹4,791</td></tr>
-                        </tbody>
-                      </table>
+                      <p class="ed-app__label">Where it goes next</p>
+                      <ol class="ed-app__flow">
+                        <li><b>Backtest</b><span>on your own candle file</span><i class="is-ok">Available</i></li>
+                        <li><b>Paper</b><span>optional, no orders sent</span><i>Next</i></li>
+                        <li><b>Live</b><span>through your broker's API</span><i>In development</i></li>
+                      </ol>
                     </div>
                   </div>
-                  <div class="ed-tape" aria-label="Simulated price feed">
-                    <span class="ed-tape__tag">Sim feed</span>
-                    <div class="ed-tape__win"><div class="ed-tape__row" id="ed-tape"></div></div>
-                    <span class="ed-tape__time" id="ed-tape-t">--:--:--</span>
-                  </div>
-                  <figcaption class="ed-app__cap">Simulated data for illustration. Not a backtest result or a forecast.</figcaption>
+                  <figcaption class="ed-app__cap">An example rule set. You write your own in the builder.</figcaption>
                 </figure>
               </div>
             </div>
@@ -524,11 +511,7 @@
                 <p class="ed-feat__k">Backtest engine</p>
                 <h3>Know how the rules behaved before they trade.</h3>
                 <p>Upload candles, set buffer, exits and costs, and read the results trade by trade. The file never leaves your browser.</p>
-                <div class="ed-feat__chart">
-                  <svg class="a-mini-eq" id="a-mini-eq" viewBox="0 0 600 140" preserveAspectRatio="none" aria-hidden="true"><path class="z" d="M0 100 H600" /><path class="l" pathLength="1" /></svg>
-                  <span class="ed-sim ed-sim--abs">Simulated</span>
-                </div>
-                <table class="ed-kv ed-kv--wide">
+                                <table class="ed-kv ed-kv--wide">
                   <tbody>
                     <tr><th scope="row">Input</th><td class="m">CSV · datetime, open, high, low, close</td></tr>
                     <tr><th scope="row">Costs</th><td>Brokerage, taxes and slippage per trade</td></tr>
@@ -1038,7 +1021,7 @@
     <div class="x-toast" id="toast" role="status" aria-live="polite"></div>
 
     <!-- Broker logos (data URIs) -->
-    <script src="algora-logos.js?v=20261126a"></script>
+    <script src="algora-logos.js?v=20261126b"></script>
     <script>
       (function () {
         var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -1552,7 +1535,7 @@
           if (err) { btMsg.textContent = err; return; }
           bt.trades = runFCB(bt.rows, s); bt.last = s;
           renderResults(bt.trades, s);
-          btMsg.textContent = bt.trades.length + (bt.trades.length === 1 ? " trade" : " trades") + " simulated.";
+          btMsg.textContent = bt.trades.length + (bt.trades.length === 1 ? " trade" : " trades") + " in this backtest.";
           $("#bt-results").scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
         });
         $("#bt-csv").addEventListener("click", function () {
@@ -1697,6 +1680,6 @@
         mountAll(); fromHash(); moveBar();
       })();
     </script>
-    <script src="algora-fx.js?v=20261126a"></script>
+    <script src="algora-fx.js?v=20261126b"></script>
   </body>
 </html>

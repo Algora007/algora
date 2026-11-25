@@ -33,3 +33,13 @@
 - The hero shows a simulated ₹ P&L. It is labelled, but SEBI bars brokers from associating with platforms that show return claims. Consider a rules-and-trades mock with no rupee totals before approaching broker partners.
 - Contact is a phone number only. Add a support email and a grievance contact.
 - Sign in is a placeholder toast; real auth is Phase 1 of ACTION_PLAN.md.
+
+## 26 Nov 2026 (b): no demo data, no return figures
+
+Algora is a platform: clients connect, write their own strategy, backtest it, paper trade if they want, then run it live. The home page no longer shows any results or rupee figures.
+
+- Hero: the simulated backtest (net P&L, trades, win rate, drawdown, equity curve, trade rows) and the "Sim feed" price tape are gone. In their place are the example bot's rules in plain English and where the bot goes next (Backtest available, Paper next, Live in development).
+- Platform section: removed the simulated equity line from the backtest card.
+- Backtester message: "N trades simulated." now reads "N trades in this backtest."
+- The TradingView market section stays. Angel One's feed can't be shown to the public from one account, so the Angel One live chart will sit inside the app, on each client's own Angel One login, once the backend exists.
+- Cache-bust v=20261126b.
