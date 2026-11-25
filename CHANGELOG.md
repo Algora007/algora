@@ -43,3 +43,22 @@ Algora is a platform: clients connect, write their own strategy, backtest it, pa
 - Backtester message: "N trades simulated." now reads "N trades in this backtest."
 - The TradingView market section stays. Angel One's feed can't be shown to the public from one account, so the Angel One live chart will sit inside the app, on each client's own Angel One login, once the backend exists.
 - Cache-bust v=20261126b.
+
+## 26 Nov 2026 (c): Dashboard rebuilt as a trading desk
+
+Researched AlgoTest, Tradetron, Quantiply, uTrade Algos, Dhan, Sensibull and QuantConnect. Everything shown is real: the IST clock, exchange calendars, and what the user saved in this browser. Nothing is simulated.
+
+- Header: a live sentence about the market (open, pre-open, F&O only, MCX open, closed until the next open), an IST clock, and a kill switch that pauses or resumes every bot at once.
+- Health lights: Broker API, market data, paper engine and saved data, each stating its real status.
+- Today's sessions timeline from 08:30 to 24:00: NSE pre-open and cash, F&O (15:40, 15:45 from 7 Dec 2026), and MCX (23:55 in US winter, 23:30 in US summer; evening only on NSE holidays). Each bot's square-off appears as a tick, and a red now-line moves in real time.
+- Six numbers: bots (active and paused), broker accounts, backtests run, next Nifty expiry, next Sensex expiry, and paper P&L (blank until the engine runs).
+- Bots table: pause or resume each bot, with a square-off countdown during the session.
+- Path to live: a progress ring and checklist (account, bot, backtest, paper, live).
+- Risk limits: daily loss limit, max trades a day and stop-entries time. Saved now; the paper engine will enforce them.
+- Positions, Orders and Engine log in a terminal panel. Orders carry a signal-to-fill delay column, the most-asked-for missing feature in competitor forums.
+- Last backtest: each run of the backtester is now saved (summary plus equity curve). The latest run's curve, metrics and earlier runs show on the dashboard.
+- Next two weeks: trading days, weekends, NSE holidays (2026 circulars), Nifty and Sensex weekly and monthly expiries moved for holidays, and the 7 Dec rule change. 2027 weekdays are flagged until NSE publishes its list.
+- Activity log: bot saved, paused, resumed or deleted, account added, backtest run, data cleared.
+- Broker accounts with their API state and a note on daily session expiry (Kite 6:00 AM, SmartAPI midnight).
+- Motion: headline words rise from a mask, labels decode, session bars grow, numbers count up, the ring and equity curve draw in once. Reduced-motion is respected.
+- New files: algora-dash.css, algora-dash.js. New saved keys: runs, log, risk (all cleared by "Clear all data").

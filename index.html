@@ -341,6 +341,7 @@
       (function () { try { var d = document.documentElement; if (window.matchMedia && !matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) { d.classList.add("fx"); setTimeout(function () { if (!window.__algoraFx) d.classList.remove("fx"); }, 4000); } } catch (e) {} })();
     </script>
     <link rel="stylesheet" href="algora-home.css?v=20261126b" />
+    <link rel="stylesheet" href="algora-dash.css?v=20261126d" />
   </head>
   <body>
     <div class="page" id="top">
@@ -702,65 +703,106 @@
           </div>
         </section>
 
-        <!-- ================= TAB: DASHBOARD (phase 2) ================= -->
+        <!-- ================= TAB: DASHBOARD ================= -->
         <section class="x-tab" id="tab-dashboard" role="tabpanel" aria-label="Dashboard" hidden>
-          <div class="x-dash__top">
-            <span class="x-badge x-badge--paper">Paper mode · no real orders</span>
-            <div><p class="x-eyebrow">Dashboard</p><h1 class="x-h2">Paper trading</h1></div>
-          </div>
+          <div class="dk">
+            <!-- 1. Desk header: the market, in one sentence -->
+            <header class="dk-head">
+              <div class="dk-head__main">
+                <p class="dk-k"><span class="dk-dot" id="dk-mkt-dot"></span><span id="dk-mkt-k">Market</span></p>
+                <h1 class="dk-h1" id="dk-h1">Your desk.</h1>
+                <p class="dk-sub" id="dk-sub">Bots, accounts and backtests saved in this browser.</p>
+              </div>
+              <div class="dk-head__side">
+                <div class="dk-clock" aria-label="India Standard Time"><b id="dk-clock">--:--:--</b><span id="dk-date">IST</span></div>
+                <button class="dk-kill" type="button" id="dk-kill" aria-pressed="false"><span class="dk-kill__ic" aria-hidden="true"></span><span id="dk-kill-t">Pause all bots</span></button>
+              </div>
+            </header>
 
-          <!-- 1. Summary -->
-          <div class="x-kpis" role="list" aria-label="Paper trading summary">
-            <div class="x-kpi" role="listitem"><span class="x-kpi__label">Paper P&amp;L total</span><span class="x-kpi__fig">—</span><span class="x-kpi__sub">No data yet</span></div>
-            <div class="x-kpi" role="listitem"><span class="x-kpi__label">Today</span><span class="x-kpi__fig">—</span><span class="x-kpi__sub">No data yet</span></div>
-            <div class="x-kpi" role="listitem"><span class="x-kpi__label">Momentum book</span><span class="x-kpi__fig">—</span><span class="x-kpi__sub">No data yet</span></div>
-            <div class="x-kpi" role="listitem"><span class="x-kpi__label">Option spread</span><span class="x-kpi__fig">—</span><span class="x-kpi__sub">No data yet</span></div>
-          </div>
+            <!-- 2. Health: what is actually connected -->
+            <ul class="dk-health" aria-label="System status">
+              <li><i class="dk-led" data-s="off"></i><div><b>Broker API</b><span id="dk-h-broker">Not connected</span></div></li>
+              <li><i class="dk-led" data-s="warn"></i><div><b>Market data</b><span>TradingView, display only</span></div></li>
+              <li><i class="dk-led" data-s="off"></i><div><b>Paper engine</b><span>In development</span></div></li>
+              <li><i class="dk-led" data-s="on" id="dk-h-store-led"></i><div><b>Saved data</b><span id="dk-h-store">This browser</span></div></li>
+            </ul>
 
-          <!-- 2. Accounts -->
-          <section class="x-sec" aria-labelledby="dash-accts-h">
-            <div class="x-sec__head">
-              <div><p class="x-eyebrow">Accounts</p><h2 class="x-h2" id="dash-accts-h">Connected broker accounts</h2></div>
-            </div>
-            <div id="dash-accts">
-              <div class="x-panel x-empty"><p>No accounts connected yet</p><button class="x-btn x-btn--primary x-btn--sm" type="button" data-goto-anchor="brokers">Connect a broker</button></div>
-            </div>
-          </section>
+            <!-- 3. Session timeline -->
+            <section class="dk-card dk-tl" aria-labelledby="dk-tl-h">
+              <div class="dk-card__head">
+                <h2 class="dk-h2" id="dk-tl-h">Today's sessions</h2>
+                <p class="dk-cap" id="dk-tl-cap">IST</p>
+              </div>
+              <div class="dk-tl__body" id="dk-tl" aria-describedby="dk-tl-cap"></div>
+            </section>
 
-          <!-- 3. Today's trades -->
-          <section class="x-sec" aria-labelledby="dash-trades-h">
-            <div class="x-sec__head">
-              <div><p class="x-eyebrow">Intraday</p><h2 class="x-h2" id="dash-trades-h">Today's trades</h2></div>
-            </div>
-            <div class="x-grid2">
-              <div class="x-panel x-empty"><p>No trades yet. Trades appear here once a bot runs.</p></div>
-              <div class="x-panel">
-                <div class="x-subhead"><h3>P&amp;L by trade</h3><span class="x-cap">₹, losses left, gains right</span></div>
-                <div class="x-empty"><p>No data yet</p></div>
+            <!-- 4. Numbers -->
+            <div class="dk-kpis" id="dk-kpis" role="list" aria-label="Summary"></div>
+
+            <!-- 5. Main column: bots, positions, calendar. Side: path to live, risk, last backtest, activity -->
+            <div class="dk-cols">
+              <div class="dk-main">
+              <section class="dk-card" aria-labelledby="dk-bots-h">
+                <div class="dk-card__head">
+                  <h2 class="dk-h2" id="dk-bots-h">Bots</h2>
+                  <button class="dk-btn" type="button" data-goto="bots">New bot</button>
+                </div>
+                <div id="dk-bots"></div>
+              </section>
+              <section class="dk-card dk-term" aria-labelledby="dk-term-h">
+                <div class="dk-card__head">
+                  <h2 class="dk-h2" id="dk-term-h">Positions and orders</h2>
+                  <div class="dk-seg" role="tablist" aria-label="Positions and orders">
+                    <button role="tab" type="button" aria-selected="true" data-term="pos">Positions</button>
+                    <button role="tab" type="button" aria-selected="false" data-term="ord">Orders</button>
+                    <button role="tab" type="button" aria-selected="false" data-term="log">Engine log</button>
+                  </div>
+                </div>
+                <div class="dk-term__body" id="dk-term"></div>
+              </section>
+              <section class="dk-card" aria-labelledby="dk-cal-h">
+                <div class="dk-card__head"><h2 class="dk-h2" id="dk-cal-h">Next two weeks</h2><p class="dk-cap">Trading days, holidays and expiries</p></div>
+                <div class="dk-cal" id="dk-cal"></div>
+                <ul class="dk-legend" aria-hidden="true"><li><i class="dk-tag--nse"></i>Nifty expiry</li><li><i class="dk-tag--bse"></i>Sensex expiry</li><li><i class="dk-tag--hol"></i>Holiday</li><li><i class="dk-tag--new"></i>Rule change</li></ul>
+                <p class="dk-foot" id="dk-cal-foot"></p>
+              </section>
+              <section class="dk-card" aria-labelledby="dk-act-h">
+                <div class="dk-card__head"><h2 class="dk-h2" id="dk-act-h">Activity</h2><p class="dk-cap">This browser</p></div>
+                <ol class="dk-act" id="dk-act"></ol>
+              </section>
+              </div>
+              <div class="dk-side">
+              <section class="dk-card" aria-labelledby="dk-ready-h">
+                  <div class="dk-card__head"><h2 class="dk-h2" id="dk-ready-h">Path to live</h2><p class="dk-cap" id="dk-ready-cap"></p></div>
+                  <div class="dk-ready" id="dk-ready"></div>
+                </section>
+              <section class="dk-card" aria-labelledby="dk-bt-h">
+                <div class="dk-card__head"><h2 class="dk-h2" id="dk-bt-h">Last backtest</h2><p class="dk-cap" id="dk-bt-cap"></p></div>
+                <div id="dk-bt"></div>
+              </section>
+              <section class="dk-card" aria-labelledby="dk-risk-h">
+                  <div class="dk-card__head"><h2 class="dk-h2" id="dk-risk-h">Risk limits</h2><p class="dk-cap">Account-wide</p></div>
+                  <form class="dk-risk" id="dk-risk" novalidate>
+                    <label><span>Daily loss limit</span><span class="dk-field"><i>₹</i><input type="number" inputmode="numeric" min="0" step="500" id="dk-risk-loss" placeholder="Off" /></span></label>
+                    <label><span>Max trades a day</span><span class="dk-field"><input type="number" inputmode="numeric" min="1" max="500" step="1" id="dk-risk-trades" placeholder="Off" /></span></label>
+                    <label><span>Stop new entries after</span><span class="dk-field"><input type="time" id="dk-risk-cut" /></span></label>
+                    <p class="dk-note" id="dk-risk-msg">Saved in this browser. The paper engine will enforce these across every bot.</p>
+                  </form>
+                </section>
+              
               </div>
             </div>
-          </section>
 
-          <!-- 4. Momentum holdings -->
-          <section class="x-sec" aria-labelledby="dash-mom-h">
-            <div class="x-sec__head">
-              <div><p class="x-eyebrow">Momentum book</p><h2 class="x-h2" id="dash-mom-h">Holdings</h2></div>
-            </div>
-            <div class="x-panel x-empty"><p>No holdings yet.</p></div>
-          </section>
-
-          <!-- 5. Bots -->
-          <section class="x-sec" aria-labelledby="dash-fcb-h">
-            <div class="x-sec__head">
-              <div><p class="x-eyebrow">Bots</p><h2 class="x-h2" id="dash-fcb-h">Your bots</h2></div>
-              <p class="x-cap" id="dash-bots-count" hidden></p>
-            </div>
-            <div id="dash-bots">
-              <div class="x-panel x-empty"><p>No bots running. Connect a broker to start.</p><button class="x-btn x-btn--primary x-btn--sm" type="button" data-goto-anchor="brokers">Connect a broker</button></div>
-            </div>
-          </section>
-
-          <p class="x-dash__note">NSE rules from 7 Dec 2026: F&amp;O until 3:45 pm; expiring index contracts stop at 3:30 pm. Bots square off at 3:15 pm.</p>
+            <!-- 8. Broker accounts -->
+            <section class="dk-card" aria-labelledby="dk-acc-h">
+              <div class="dk-card__head">
+                <h2 class="dk-h2" id="dk-acc-h">Broker accounts</h2>
+                <button class="dk-btn" type="button" data-goto-anchor="brokers">Add account</button>
+              </div>
+              <div id="dk-acc"></div>
+              <p class="dk-foot">Indian broker API sessions expire every day: Zerodha Kite at 6:00 AM the next day, Angel One SmartAPI at midnight. Once broker APIs are connected, each account's session shows here before the open.</p>
+            </section>
+          </div>
         </section>
 
         <!-- ================= TAB: BOTS (phase 3) ================= -->
@@ -1036,13 +1078,15 @@
           clearTimeout(toastT); toastT = setTimeout(function () { toastEl.classList.remove("is-on"); }, 2600);
         }
 
+        function logEv(m) { var l = store.get("log"); l = Array.isArray(l) ? l : []; l.unshift({ t: Date.now(), m: String(m).slice(0, 140) }); store.set("log", l.slice(0, 60)); }
+
         /* Storage: localStorage under "algora:", silently in-memory when blocked. Never holds keys or secrets. */
-        var PFX = "algora:";
+        var PFX = "algora:", mem = {};
         var store = {
           ok: (function () { try { var k = PFX + "__t"; localStorage.setItem(k, "1"); localStorage.removeItem(k); return true; } catch (e) { return false; } })(),
-          get: function (k) { try { var v = localStorage.getItem(PFX + k); return v == null ? null : JSON.parse(v); } catch (e) { return null; } },
-          set: function (k, v) { try { localStorage.setItem(PFX + k, JSON.stringify(v)); } catch (e) {} },
-          clear: function () { try { ["theme", "accounts", "bots", "backtest"].forEach(function (k) { localStorage.removeItem(PFX + k); }); } catch (e) {} }
+          get: function (k) { try { var v = localStorage.getItem(PFX + k); return v == null ? (k in mem ? mem[k] : null) : JSON.parse(v); } catch (e) { return k in mem ? mem[k] : null; } },
+          set: function (k, v) { try { localStorage.setItem(PFX + k, JSON.stringify(v)); } catch (e) {} mem[k] = v; document.dispatchEvent(new CustomEvent("algora:change", { detail: k })); },
+          clear: function () { mem = {}; try { ["theme", "accounts", "bots", "backtest", "runs", "log", "risk"].forEach(function (k) { localStorage.removeItem(PFX + k); delete mem[k]; }); } catch (e) {} }
         };
 
         /* 1. Theme */
@@ -1148,8 +1192,8 @@
           renderDashAccts(); renderBotAccts();
         }
         /* Dashboard: accounts strip from the same in-memory store */
-        var dashEmpty = $("#dash-accts").innerHTML;
-        function renderDashAccts() {
+        function renderDashAccts() { document.dispatchEvent(new CustomEvent("algora:change", { detail: "accounts" })); }
+        function renderDashAcctsOld() {
           var box = $("#dash-accts"), strip = document.createElement("div"); strip.className = "x-accts";
           brokers.forEach(function (b) {
             accounts[b[0]].forEach(function (l) {
@@ -1186,7 +1230,7 @@
           var list = accounts[current[0]];
           if (list.indexOf(v) > -1) { toast("That label is already added."); return; }
           list.push(v); saveAccounts(); renderBroker(current[0]); renderSaved(); input.value = ""; input.focus();
-          toast(v + " added to " + current[1]);
+          toast(v + " added to " + current[1]); logEv(current[1] + " account \u201c" + v + "\u201d added");
         });
 
         /* 5. TradingView widgets */
@@ -1310,22 +1354,20 @@
             f.appendChild(el("span", "x-status", statusText(b)));
             var p = el("button", "x-btn x-btn--sm", b.paused ? "Resume" : "Pause"); p.type = "button";
             p.setAttribute("aria-label", (b.paused ? "Resume " : "Pause ") + b.name);
-            p.addEventListener("click", function () { b.paused = !b.paused; saveBots(); renderBots(); toast(b.name + (b.paused ? " paused" : " resumed")); });
+            p.addEventListener("click", function () { b.paused = !b.paused; saveBots(); renderBots(); toast(b.name + (b.paused ? " paused" : " resumed")); logEv(b.name + (b.paused ? " paused" : " resumed")); });
             var d = el("button", "x-btn x-btn--sm x-btn--danger", "Delete"); d.type = "button"; d.setAttribute("aria-label", "Delete " + b.name);
-            d.addEventListener("click", function () { myBots = myBots.filter(function (o) { return o !== b; }); saveBots(); renderBots(); toast(b.name + " deleted"); });
+            d.addEventListener("click", function () { myBots = myBots.filter(function (o) { return o !== b; }); saveBots(); renderBots(); toast(b.name + " deleted"); logEv(b.name + " deleted"); });
             acts.appendChild(p); acts.appendChild(d); f.appendChild(acts); c.appendChild(f);
             grid.appendChild(c);
           });
           renderBotMini();
         }
         /* Dashboard and Home: compact list from the same store */
-        var miniEmpty = { "#dash-bots": $("#dash-bots").innerHTML, "#home-bots": $("#home-bots").innerHTML };
+        var miniEmpty = { "#home-bots": $("#home-bots").innerHTML };
         function renderBotMini() {
           $("#glance").hidden = !myBots.length;
           var paused = myBots.filter(function (b) { return b.paused; }).length;
-          var dc = $("#dash-bots-count");
-          dc.hidden = !myBots.length;
-          dc.textContent = myBots.length + (myBots.length === 1 ? " bot" : " bots") + " · " + (myBots.length - paused) + " active · " + paused + " paused";
+          document.dispatchEvent(new CustomEvent("algora:change", { detail: "bots" }));
           Object.keys(miniEmpty).forEach(function (sel) {
             var box = $(sel);
             if (!myBots.length) { box.innerHTML = miniEmpty[sel]; return; }
@@ -1354,7 +1396,7 @@
           var name = $("#bf-name").value.trim() || strat + " · " + inst;
           myBots.push({ id: ++botSeq, name: name, strategy: strat, inst: inst, acctLabel: opt.textContent, tf: $("#bf-tf").value, buf: buf, exit: exitMode, exitv: exv, sq: bfSq.value, max: max, qty: qty, paused: false });
           saveBots(); renderBots(); $("#bf-name").value = ""; bfMsg.textContent = "";
-          toast(name + " saved as a paper bot");
+          toast(name + " saved as a paper bot"); logEv(name + " saved as a paper bot");
         });
         renderBotAccts(); autoSq();
 
@@ -1534,10 +1576,21 @@
             s.lot === null || s.lot % 1 ? "Lot size must be a whole number." : s.delta === null ? "Multiplier must be 0.01 to 1." : s.cost === null ? "Cost must be 0 or more." : "";
           if (err) { btMsg.textContent = err; return; }
           bt.trades = runFCB(bt.rows, s); bt.last = s;
-          renderResults(bt.trades, s);
+          renderResults(bt.trades, s); saveRun(bt.trades, s);
           btMsg.textContent = bt.trades.length + (bt.trades.length === 1 ? " trade" : " trades") + " in this backtest.";
           $("#bt-results").scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
         });
+        function saveRun(trades, s) {
+          var eq = [0], wins = 0, gw = 0, gl = 0, peak = 0, dd = 0;
+          trades.forEach(function (t) { var v = eq[eq.length - 1] + t.pnl; eq.push(v); peak = Math.max(peak, v); dd = Math.max(dd, peak - v); if (t.pnl > 0) { wins++; gw += t.pnl; } else gl -= t.pnl; });
+          var step = Math.max(1, Math.ceil(eq.length / 80)), pts = eq.filter(function (v, i) { return i % step === 0 || i === eq.length - 1; }).map(function (v) { return Math.round(v); });
+          var rows = bt.rows || [], fname = ($("#bt-fname").textContent || "").split(" · ")[0];
+          var run = { t: Date.now(), file: fname.slice(0, 80), strategy: s.strategy, from: rows.length ? rows[0].day : "", to: rows.length ? rows[rows.length - 1].day : "",
+            tf: $("#bt-tf").textContent, trades: trades.length, net: Math.round(eq[eq.length - 1]), win: trades.length ? Math.round(wins / trades.length * 100) : null,
+            pf: gl ? +(gw / gl).toFixed(2) : null, dd: Math.round(dd), eq: pts, lot: s.lot, cost: s.cost, buf: s.buf, exit: s.exit, ev: s.ev, sq: s.sqT };
+          var runs = store.get("runs"); runs = Array.isArray(runs) ? runs : []; runs.unshift(run); store.set("runs", runs.slice(0, 12));
+          logEv("Backtest: " + s.strategy + " on " + (run.file || "your file") + ", " + trades.length + (trades.length === 1 ? " trade" : " trades"));
+        }
         $("#bt-csv").addEventListener("click", function () {
           if (!bt.trades.length) return;
           var lines = ["date,side,entry_time,entry_price,exit_time,exit_price,reason,points,pnl_inr"].concat(bt.trades.map(function (t) {
@@ -1668,7 +1721,7 @@
           var fb = $('#bt-exit [data-exit="flip"]'); if (fb) fb.click();
           if (theme !== "dark") setTheme("dark");
           store.clear(); renderAll(); closeClear();
-          toast("All saved data cleared");
+          toast("All saved data cleared"); logEv("All saved data cleared");
         });
         document.addEventListener("click", function (e) {
           var t = e.target.closest("[data-export],[data-import],[data-clear]"); if (!t) return;
@@ -1677,9 +1730,18 @@
           else if (clearModal.showModal) clearModal.showModal(); else clearModal.setAttribute("open", "");
         });
 
+        window.AlgoraApp = {
+          bots: function () { return myBots; },
+          accounts: function () { return accounts; },
+          brokers: brokers, tile: tile, go: go, toast: toast, log: logEv, store: store,
+          setPaused: function (i, v) { var b = myBots[i]; if (!b || b.paused === v) return; b.paused = v; saveBots(); renderBots(); logEv(b.name + (v ? " paused" : " resumed")); },
+          pauseAll: function (v) { var n = 0; myBots.forEach(function (b) { if (b.paused !== v) { b.paused = v; n++; } }); if (!n) return 0; saveBots(); renderBots(); logEv((v ? "Paused" : "Resumed") + " all bots (" + n + ")"); return n; }
+        };
+        document.dispatchEvent(new CustomEvent("algora:ready"));
         mountAll(); fromHash(); moveBar();
       })();
     </script>
     <script src="algora-fx.js?v=20261126b"></script>
+    <script src="algora-dash.js?v=20261126d"></script>
   </body>
 </html>
